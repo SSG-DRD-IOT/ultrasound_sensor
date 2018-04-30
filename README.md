@@ -11,11 +11,11 @@ https://www.electroschematics.com/8902/hc-sr04-datasheet/
 
 Image-1: HC-SR04 Sensor
 
-
+![Image of HC-SR04](https://github.com/odundar/ultrasound_sensor/resources/hcsr04.png)
 
 Image-2: Electronics of HC-SR04 Sensor
 
-
+![Image of HC-SR04 DS](https://github.com/odundar/ultrasound_sensor/resources/hcsr04-ds.png)
 
 We need two GPIO pins, I will use PIN 13-15 from UP2 GP-Bus Expansion.
 
