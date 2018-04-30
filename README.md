@@ -40,8 +40,8 @@ gpio_get_value
 gpio_set_value
 
 ### Code Block:
-
-`#include <stdlib.h>
+```
+#include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdint.h>
@@ -134,8 +134,6 @@ int gpio_set_mode(int gpio_num, const char* mode) {
     close(fd_d);
     return 0;
 }
-
-
 
 /**
  * GPIO Set Value
@@ -279,31 +277,32 @@ int main() {
     }while(ch != 'q' && ch != 'Q');
 
     return 0;
-}`
+}
+```
 
 ### Build Run Instruction:
-`
+```
 $ cd legacy_sys/
-$ gcc ultrasound.c -o ultrasound
-`
+$ gcc ultrasound.c -o Ultrasound
+ ```
 or
-`
+```
 $ mkdir build
 $ cmake ../
 $ make all
 
 $ sudo ./Ultrasound
-`
+ ```
 
 What if we wanted to use MRAA?
 
 There wouldn't be any need for reinventing the wheel, so we can just use the MRAA methods:
-
+```
 mraa_gpio_init
 mraa_gpio_dir
 mraa_gpio_write
 mraa_gpio_read
-
+```
 to play with GPIO. Need to change to MRAA's own Pin Numbering instead of SYSFS GPIO Numbers.
 
 see : https://github.com/intel-iot-devkit/mraa/blob/master/docs/up2.md
@@ -312,17 +311,17 @@ see : https://github.com/intel-iot-devkit/mraa/blob/master/docs/up2.md
 
 
 ### Build and Run Instructions
-`
-$ gcc ultrasound_upm.c -I/usr/include/mraa/ -L/usr/lib/x86_64-linux-gnu/ -lmraa
-`
+```
+$ gcc ultrasound_upm.c -o UltrasoundMRAA -I/usr/include/mraa/ -L/usr/lib/x86_64-linux-gnu/ -lmraa
+```
 or 
-`
+```
 $ mkdir build
 $ cmake ../
 $ make all
 
 $ sudo ./UltrasoundMRAA
-`
+ ```
 
 What if we skip MRAA and just use UPM which already have HC-SR04 sensor in its library?
 
@@ -333,15 +332,14 @@ UPM library already does sensor initialisation so no need to access for GPIO pin
 
 
 ### Build and Run Instructions
-`
-$ gcc ultrasound_upm.c -I/usr/include/upm/ -L/usr/lib/x86_64-linux-gnu/ -lmraa -lupmc-hcsr04
-`
+```
+$ gcc ultrasound_upm.c -o UltrasoundUPM -I/usr/include/upm/ -L/usr/lib/x86_64-linux-gnu/ -lmraa -lupmc-hcsr04
+```
 or 
-`
+```
 $ mkdir build
 $ cmake ../
 $ make all
 
 $ sudo ./UltrasoundUPM
-`
-
+ ```
