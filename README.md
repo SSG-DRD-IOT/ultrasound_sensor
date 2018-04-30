@@ -42,7 +42,7 @@ gpio_export
 gpio_get_value
 gpio_set_value
 ```
-
+Code can be accessed from : [Ultrasound Distance Measure with UP2 Board](https://github.com/odundar/ultrasound_sensor/blob/master/legacy_sysfs/ultrasound_legacy.c)
 ### Code Block:
 ```
 #include <stdlib.h>
@@ -313,6 +313,8 @@ to play with GPIO. Need to change to MRAA's own Pin Numbering instead of SYSFS G
 
 see : https://github.com/intel-iot-devkit/mraa/blob/master/docs/up2.md
 
+Code can be accessed from : [Ultrasound Distance Measure with UP2 Board - MRAA](https://github.com/odundar/ultrasound_sensor/blob/master/mraa/ultrasound_mraa.c)
+
 ### MRAA - Code Block
 ```
 /* standard headers */
@@ -459,6 +461,8 @@ $ sudo ./UltrasoundMRAA
 What if we skip MRAA and just use UPM which already have HC-SR04 sensor in its library?
 
 UPM library already does sensor initialisation so no need to access for GPIO pins when we defined the PIN numbers.
+
+Code can be accessed from : [Ultrasound Distance Measure with UP2 Board - UPM](https://github.com/odundar/ultrasound_sensor/blob/master/mraa/ultrasound_upm.c)
 
 ### UPM - Code Block
 ```
