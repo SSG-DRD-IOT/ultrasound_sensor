@@ -11,7 +11,7 @@ https://www.electroschematics.com/8902/hc-sr04-datasheet/
 
 Image-1: HC-SR04 Sensor
 
-![Image of HC-SR04](https://github.com/odundar/ultrasound_sensor/blob/master/resources/hcsr04-ds.png)
+![Image of HC-SR04](https://github.com/odundar/ultrasound_sensor/blob/master/resources/hcsr04.png)
 
 Image-2: Electronics of HC-SR04 Sensor
 
