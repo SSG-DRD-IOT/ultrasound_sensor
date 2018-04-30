@@ -231,7 +231,7 @@ int main() {
         }
 
         //wait 2 seconds
-        sleep(2000);
+        sleep(2);
 
         ch = getchar();
     }while(ch != 'q' && ch != 'Q');

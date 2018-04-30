@@ -105,7 +105,7 @@ int main() {
             printf("%f centimeters\n", distance);
         }
 
-        upm_delay_us(2000);
+        upm_delay(2);//2 sec delay
 
         ch = getchar();
     }while(ch != 'q' && ch != 'Q');
