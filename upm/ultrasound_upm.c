@@ -8,8 +8,8 @@
 #include "upm_utilities.h"
 #include "hcsr04.h"
 
-#define TRIG_PIN 431 //MRAA NO 7, PIN 15 on UP2 board
-#define ECHO_PIN 432 //MRAA NO 13, PIN 13 on UP2 board
+#define TRIG_PIN 15 //MRAA NO 15, PIN 15 on UP2 board
+#define ECHO_PIN 13 //MRAA NO 13, PIN 13 on UP2 board
 
 const double minDistance = 2.00; //cms limits of sensor
 const double maxDistance = 400.00; //cms
@@ -28,6 +28,8 @@ int main() {
 
     //start distance calculation
     do{
+        printf("Calculating New Distance .... \n");
+
         distance = hcsr04_get_distance(dev, HCSR04_CM);
 
         printf("New Distance: ");

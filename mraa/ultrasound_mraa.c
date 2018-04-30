@@ -8,8 +8,8 @@
 /* mraa header */
 #include "mraa/gpio.h"
 
-#define TRIG_PIN 431 //MRAA NO 7, PIN 15 on UP2 board
-#define ECHO_PIN 432 //MRAA NO 13, PIN 13 on UP2 board
+#define TRIG_PIN 15 //MRAA NO 15, PIN 15 on UP2 board
+#define ECHO_PIN 13 //MRAA NO 13, PIN 13 on UP2 board
 
 #define HIGH 1
 #define LOW 0
@@ -60,7 +60,7 @@ int main() {
 
     //start distance calculation
     do{
-
+        printf("Calculating New Distance .... \n");
         mraa_gpio_write(trig_pin, 1);
         usleep(10);
         mraa_gpio_write(trig_pin, 0);
@@ -92,9 +92,6 @@ int main() {
         double e = (double) end.tv_sec * 1000000 + (double) end.tv_usec;
 
         double distance = (e - s) / distanceConstant;
-
-        printf("Start Time us :%f\n", s);
-        printf("End Time us :%f\n", e);
 
         printf("New Distance: ");
         if ((int) distance > maxDistance) {
