@@ -25,6 +25,34 @@ const double minDistance = 2.00; //cms limits of sensor
 const double maxDistance = 400.00; //cms
 
 /**
+ * Export Given GPIO
+ * @param gpio_num
+ * @return
+ */
+int gpio_export(int gpio_num) {
+    //Device File Path Declarations
+    const char* gpio_export = "/sys/class/gpio/export";
+    //Device File Declarations
+    int fd_x = 0, g_err = -1;
+    //Buffer
+    char g_buf[BUF];
+    fd_x = open(gpio_export, O_WRONLY);
+    if (fd_x < 0) {
+        printf("Couldn't get export FD\n");
+        return g_err;
+    }
+    //Export GPIO Pin
+    sprintf(g_buf, "%d", gpio_num);
+    if (write(fd_x, g_buf, sizeof(g_buf)) == g_err) {
+        printf("Couldn't export GPIO %d\n", gpio_num);
+        close(fd_x);
+        return g_err;
+    }
+    close(fd_x);
+    return 0;
+}
+
+/**
  * GPIO Mode Set Method
  * @param gpio_num
  * @param mode
@@ -65,33 +93,7 @@ int gpio_set_mode(int gpio_num, const char* mode) {
     return 0;
 }
 
-/**
- * Export Given GPIO
- * @param gpio_num
- * @return
- */
-int gpio_export(int gpio_num) {
-    //Device File Path Declarations
-    const char* gpio_export = "/sys/class/gpio/export";
-    //Device File Declarations
-    int fd_x = 0, g_err = -1;
-    //Buffer
-    char g_buf[BUF];
-    fd_x = open(gpio_export, O_WRONLY);
-    if (fd_x < 0) {
-        printf("Couldn't get export FD\n");
-        return g_err;
-    }
-    //Export GPIO Pin
-    sprintf(g_buf, "%d", gpio_num);
-    if (write(fd_x, g_buf, sizeof(g_buf)) == g_err) {
-        printf("Couldn't export GPIO %d\n", gpio_num);
-        close(fd_x);
-        return g_err;
-    }
-    close(fd_x);
-    return 0;
-}
+
 
 /**
  * GPIO Set Value
