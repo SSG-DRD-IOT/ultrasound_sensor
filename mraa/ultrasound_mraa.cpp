@@ -56,7 +56,10 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    while(1) {
+    char ch;
+
+    //start distance calculation
+    do{
 
         mraa_gpio_write(dev->trigPin, 1);
         upm_delay_us(10);
@@ -103,7 +106,9 @@ int main() {
         }
 
         upm_delay_us(2000);
-    }
+
+        ch = getchar();
+    }while(ch != 'q' && ch != 'Q');
 
     /* release gpio's */
     status = mraa_gpio_close(TRIG_PIN);

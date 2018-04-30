@@ -20,11 +20,28 @@ int main() {
     }
 
     double distance;
-    while(1) {
+
+    char ch;
+
+    //start distance calculation
+    do{
         distance = hcsr04_get_distance(dev, HCSR04_CM);
-        printf("Distance detected: %f\n", distance);
-        upm_delay(1);
-    }
+
+        printf("New Distance: ");
+        if ( distance > maxDistance) {
+            printf("%f centimeters\n", maxDistance);
+        } else if ( distance < minDistance) {
+            printf("%f centimeters\n", maxDistance);
+        } else {
+            printf("%f centimeters\n", distance);
+        }
+
+        //delay 2 seconds
+        upm_delay(2);
+
+        ch = getchar();
+
+    }while(ch != 'q' && ch != 'Q');
 
     return 0;
 }

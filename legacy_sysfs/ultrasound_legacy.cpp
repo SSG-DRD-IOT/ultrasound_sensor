@@ -17,12 +17,11 @@
 #define BUF 8
 #define MAX_BUF 256
 
-const int trigPinDuration = 10; // trigger duration
-const int soundBurstDuration = 8; //ms when burst sent
+const int TriggerDuration = 10; // trigger duration
 
-const double distanceConstant = 59.0;
+const double distanceConstant = 59.0;// uS constant as datasheet pointed
 
-const double minDistance = 2.00; //cms
+const double minDistance = 2.00; //cms limits of sensor
 const double maxDistance = 400.00; //cms
 
 /**
@@ -134,6 +133,7 @@ int gpio_set_value(int gpio_num, int value) {
     close(fd_v);
     return 0;
 }
+
 /**
  * Get current value of GPIO
  * @param gpio_num integer gpio number in linux
@@ -178,13 +178,15 @@ int main() {
     gpio_set_mode(TRIG_PIN, OUTPUT);
     gpio_set_mode(ECHO_PIN, INPUT);
 
-    char q = 'y';
+    char ch;
 
-    while(1) {
-        printf("Calculating Distance");
+    //start distance calculation
+    do{
+        printf("Calculating New Distance .... \n");
         //Set Trigger Pin HIGH
         gpio_set_value(TRIG_PIN, HIGH);
-        usleep(trigPinDuration);
+        //wait for trigger duration
+        usleep(TriggerDuration);
         //Set Trigger Pin LOW
         gpio_set_value(TRIG_PIN, LOW);
 
@@ -198,6 +200,7 @@ int main() {
         long cycleLength = (1000000 * start.tv_sec) + start.tv_usec + 70000;
         long sampleTime = 0;
 
+        //wait till echo pin gets low
         while (sampleTime < cycleLength) {
             echo = gpio_get_value(ECHO_PIN);
             if (echo == 1 && counter == 0) {
@@ -216,20 +219,20 @@ int main() {
 
         double distance = (e - s) / distanceConstant;
 
-        printf("Start Time us :%f\n", s);
-        printf("End Time us :%f\n", e);
-
         printf("New Distance: ");
-        if ((int) distance > maxDistance) {
+        if ( distance > maxDistance) {
             printf("%f centimeters\n", maxDistance);
-        } else if ((int) distance < minDistance) {
+        } else if ( distance < minDistance) {
             printf("%f centimeters\n", maxDistance);
         } else {
             printf("%f centimeters\n", distance);
         }
 
-        usleep(2000);
-    }
+        //wait 2 seconds
+        sleep(2000);
+
+        ch = getchar();
+    }while(ch != 'q' && ch != 'Q');
 
     return 0;
 }
