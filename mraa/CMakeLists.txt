@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.0)
 project(Ultrasound)
 
-set(CMAKE_C_STANDARD 11)
-
+include_directories(/usr/include/upm)
 include_directories(/usr/include/mraa)
+link_directories(/usr/lib/x86_64-linux-gnu)
 
-link_libraries(mraa)
+add_executable(UltrasoundUPM ultrasound_mraa.c)
 
-add_executable(UltrasoundMRAA ultrasound_mraa.c)
+target_link_libraries(UltrasoundUPM mraa)

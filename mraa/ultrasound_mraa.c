@@ -30,27 +30,27 @@ int main() {
     mraa_result_t status = MRAA_SUCCESS;
 
     //Set GPIO PIN MODES
-    int trig_pin = mraa_gpio_init(triggerPin);
+    int trig_pin = mraa_gpio_init(TRIG_PIN);
 
     if (trig_pin == NULL) {
         fprintf(stderr, "Failed to initialize GPIO %d\n", TRIG_PIN);
         return EXIT_FAILURE;
     }
 
-    int echo_pin = mraa_gpio_init(echoPin);
+    int echo_pin = mraa_gpio_init(ECHO_PIN);
 
     if (echo_pin == NULL) {
         fprintf(stderr, "Failed to initialize GPIO %d\n", ECHO_PIN);
         return EXIT_FAILURE;
     }
 
-    status = mraa_gpio_dir(TRIG_PIN, MRAA_GPIO_OUT);
+    status = mraa_gpio_dir(trig_pin, MRAA_GPIO_OUT);
     if (status != MRAA_SUCCESS) {
         mraa_result_print(status);
         return EXIT_FAILURE;
     }
 
-    status = mraa_gpio_dir(ECHO_PIN, MRAA_GPIO_IN);
+    status = mraa_gpio_dir(echo_pin, MRAA_GPIO_IN);
     if (status != MRAA_SUCCESS) {
         mraa_result_print(status);
         return EXIT_FAILURE;
@@ -61,9 +61,9 @@ int main() {
     //start distance calculation
     do{
 
-        mraa_gpio_write(dev->trigPin, 1);
-        upm_delay_us(10);
-        mraa_gpio_write(dev->trigPin, 0);
+        mraa_gpio_write(trig_pin, 1);
+        usleep(10);
+        mraa_gpio_write(trig_pin, 0);
 
         struct timeval start;
         struct timeval end;
@@ -76,7 +76,7 @@ int main() {
         long sampleTime = 0;
 
         while (sampleTime < cycleLength) {
-            echo = mraa_gpio_read(ECHO_PIN);
+            echo = mraa_gpio_read(echo_pin);
             if (echo == 1 && counter == 0) {
                 gettimeofday(&start, NULL);
                 counter++;
@@ -105,20 +105,20 @@ int main() {
             printf("%f centimeters\n", distance);
         }
 
-        upm_delay(2);//2 sec delay
+        sleep(1);//2 sec delay
 
         ch = getchar();
     }while(ch != 'q' && ch != 'Q');
 
     /* release gpio's */
-    status = mraa_gpio_close(TRIG_PIN);
+    status = mraa_gpio_close(trig_pin);
     if (status != MRAA_SUCCESS) {
         mraa_result_print(status);
         return EXIT_FAILURE;
     }
 
     /* close GPIO */
-    status = mraa_gpio_close(ECHO_PIN);
+    status = mraa_gpio_close(echo_pin);
     if (status != MRAA_SUCCESS) {
         mraa_result_print(status);
         return EXIT_FAILURE;

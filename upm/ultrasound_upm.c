@@ -41,7 +41,7 @@ int main() {
         }
 
         //delay 2 seconds
-        upm_delay(2);
+        sleep(2);
 
         ch = getchar();
 
