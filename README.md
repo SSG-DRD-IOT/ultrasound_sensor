@@ -20,10 +20,12 @@ Image-2: Electronics of HC-SR04 Sensor
 We need two GPIO pins, I will use PIN 13-15 from UP2 GP-Bus Expansion.
 
 In Linux SYSFS:
-- PIN 13 corresponds to GPIO 432
-- PIN 15 corresponds to GPIO 431
+- PIN 13 corresponds to GPIO 432 in sysfs
+- PIN 15 corresponds to GPIO 431 in sysfs
 
 See UP2 board pinout: https://wiki.up-community.org/Pinout_UP2
+
+## Using SYSFS 
 
 So let's write our code to read distance continuously from HC-SR4 sensor and print the distance in centimeters until you press 'q' or 'Q':
 
@@ -34,10 +36,12 @@ Measure the us for ECHO PIN get HIGH
 Calculate Distance with formula (duration (uS) / 59.0) in centimeters
 
 Logic is simple but, in order to play with GPIO pins, I had developed 4 methods:
+```
 gpio_set_mode
 gpio_export
 gpio_get_value
 gpio_set_value
+```
 
 ### Code Block:
 ```
@@ -294,6 +298,8 @@ $ make all
 $ sudo ./Ultrasound
  ```
 
+## Using MRAA 
+
 What if we wanted to use MRAA?
 
 There wouldn't be any need for reinventing the wheel, so we can just use the MRAA methods:
@@ -307,8 +313,133 @@ to play with GPIO. Need to change to MRAA's own Pin Numbering instead of SYSFS G
 
 see : https://github.com/intel-iot-devkit/mraa/blob/master/docs/up2.md
 
-### Code Block
+### MRAA - Code Block
+```
+/* standard headers */
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
+/* mraa header */
+#include "mraa/gpio.h"
+
+#define TRIG_PIN 15 //MRAA NO 15, PIN 15 on UP2 board
+#define ECHO_PIN 13 //MRAA NO 13, PIN 13 on UP2 board
+
+#define HIGH 1
+#define LOW 0
+
+#define BUF 8
+#define MAX_BUF 256
+
+const int trigPinDuration = 10; // trigger duration
+const int soundBurstDuration = 8; //ms when burst sent
+
+const double distanceConstant = 59.0;
+
+const double minDistance = 2.00; //cms
+const double maxDistance = 400.00; //cms
+
+
+int main() {
+    mraa_result_t status = MRAA_SUCCESS;
+
+    //Set GPIO PIN MODES
+    int trig_pin = mraa_gpio_init(TRIG_PIN);
+
+    if (trig_pin == NULL) {
+        fprintf(stderr, "Failed to initialize GPIO %d\n", TRIG_PIN);
+        return EXIT_FAILURE;
+    }
+
+    int echo_pin = mraa_gpio_init(ECHO_PIN);
+
+    if (echo_pin == NULL) {
+        fprintf(stderr, "Failed to initialize GPIO %d\n", ECHO_PIN);
+        return EXIT_FAILURE;
+    }
+
+    status = mraa_gpio_dir(trig_pin, MRAA_GPIO_OUT);
+    if (status != MRAA_SUCCESS) {
+        mraa_result_print(status);
+        return EXIT_FAILURE;
+    }
+
+    status = mraa_gpio_dir(echo_pin, MRAA_GPIO_IN);
+    if (status != MRAA_SUCCESS) {
+        mraa_result_print(status);
+        return EXIT_FAILURE;
+    }
+
+    char ch;
+
+    //start distance calculation
+    do{
+        printf("Calculating New Distance .... \n");
+        mraa_gpio_write(trig_pin, 1);
+        usleep(10);
+        mraa_gpio_write(trig_pin, 0);
+
+        struct timeval start;
+        struct timeval end;
+
+        int echo = 0;
+        int counter = 0;
+        gettimeofday(&start, NULL);
+
+        long cycleLength = (1000000 * start.tv_sec) + start.tv_usec + 70000;
+        long sampleTime = 0;
+
+        while (sampleTime < cycleLength) {
+            echo = mraa_gpio_read(echo_pin);
+            if (echo == 1 && counter == 0) {
+                gettimeofday(&start, NULL);
+                counter++;
+            } else if (echo == 0 && counter == 1) {
+                gettimeofday(&end, NULL);
+                break;
+            } else {
+                sampleTime = (1000000 * start.tv_sec) + start.tv_usec;
+            }
+        }
+
+        double s = (double) start.tv_sec * 1000000 + (double) start.tv_usec;
+        double e = (double) end.tv_sec * 1000000 + (double) end.tv_usec;
+
+        double distance = (e - s) / distanceConstant;
+
+        printf("New Distance: ");
+        if ((int) distance > maxDistance) {
+            printf("%f centimeters\n", maxDistance);
+        } else if ((int) distance < minDistance) {
+            printf("%f centimeters\n", maxDistance);
+        } else {
+            printf("%f centimeters\n", distance);
+        }
+
+        sleep(1);//2 sec delay
+
+        ch = getchar();
+    }while(ch != 'q' && ch != 'Q');
+
+    /* release gpio's */
+    status = mraa_gpio_close(trig_pin);
+    if (status != MRAA_SUCCESS) {
+        mraa_result_print(status);
+        return EXIT_FAILURE;
+    }
+
+    /* close GPIO */
+    status = mraa_gpio_close(echo_pin);
+    if (status != MRAA_SUCCESS) {
+        mraa_result_print(status);
+        return EXIT_FAILURE;
+    }
+
+    return 0;
+}
+```
 
 ### Build and Run Instructions
 ```
@@ -323,13 +454,66 @@ $ make all
 $ sudo ./UltrasoundMRAA
  ```
 
+## Using UPM
+
 What if we skip MRAA and just use UPM which already have HC-SR04 sensor in its library?
 
 UPM library already does sensor initialisation so no need to access for GPIO pins when we defined the PIN numbers.
 
-### Code Block
+### UPM - Code Block
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 
+#include "upm_utilities.h"
+#include "hcsr04.h"
 
+#define TRIG_PIN 15 //MRAA NO 15, PIN 15 on UP2 board
+#define ECHO_PIN 13 //MRAA NO 13, PIN 13 on UP2 board
+
+const double minDistance = 2.00; //cms limits of sensor
+const double maxDistance = 400.00; //cms
+
+int main() {
+    hcsr04_context dev = hcsr04_init(TRIG_PIN, ECHO_PIN);
+
+    if(dev == NULL) {
+        printf("Unable to intialize the sensor\n");
+        return 0;
+    }
+
+    double distance;
+
+    char ch;
+
+    //start distance calculation
+    do{
+        printf("Calculating New Distance .... \n");
+
+        distance = hcsr04_get_distance(dev, HCSR04_CM);
+
+        printf("New Distance: ");
+        if ( distance > maxDistance) {
+            printf("%f centimeters\n", maxDistance);
+        } else if ( distance < minDistance) {
+            printf("%f centimeters\n", maxDistance);
+        } else {
+            printf("%f centimeters\n", distance);
+        }
+
+        //delay 2 seconds
+        sleep(2);
+
+        ch = getchar();
+
+    }while(ch != 'q' && ch != 'Q');
+
+    return 0;
+}
+```
 
 ### Build and Run Instructions
 ```
