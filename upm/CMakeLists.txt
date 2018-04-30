@@ -3,4 +3,4 @@ project(Ultrasound)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(UltrasoundUPM ultrasound_upm.cpp)
+add_executable(UltrasoundUPM ultrasound_upm.c)

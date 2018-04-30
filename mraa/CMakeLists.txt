@@ -3,4 +3,4 @@ project(Ultrasound)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(UltrasoundMRAA ultrasound_mraa.cpp)
+add_executable(UltrasoundMRAA ultrasound_mraa.c)
