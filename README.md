@@ -39,9 +39,9 @@ gpio_export
 gpio_get_value
 gpio_set_value
 
-####Code Block:
+Code Block:
 
-####Build Run Instruction:
+Build Run Instruction:
 
 $ cd legacy_sys/
 $ gcc ultrasound.c -o ultrasound
@@ -65,20 +65,20 @@ mraa_gpio_read
 
 to play with GPIO.
 
-####Code Block
+Code Block
 
 
-####Build and Run Instructions
+Build and Run Instructions
 
 What if we skip MRAA and just use UPM which already have HC-SR04 sensor in its library?
 
 UPM library already does sensor initialisation so no need to access for GPIO pins when we defined the PIN numbers.
 
-####Code Block
+Code Block
 
 
 
-####Build and Run Instructions
+Build and Run Instructions
 
 
 
