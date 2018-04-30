@@ -5,4 +5,6 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(/usr/include/mraa)
 
+link_libraries(mraa)
+
 add_executable(UltrasoundMRAA ultrasound_mraa.c)

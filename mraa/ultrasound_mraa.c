@@ -44,13 +44,13 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    status = mraa_gpio_dir(dev->trigPin, MRAA_GPIO_OUT);
+    status = mraa_gpio_dir(TRIG_PIN, MRAA_GPIO_OUT);
     if (status != MRAA_SUCCESS) {
         mraa_result_print(status);
         return EXIT_FAILURE;
     }
 
-    status = mraa_gpio_dir(dev->echoPin, MRAA_GPIO_IN);
+    status = mraa_gpio_dir(ECHO_PIN, MRAA_GPIO_IN);
     if (status != MRAA_SUCCESS) {
         mraa_result_print(status);
         return EXIT_FAILURE;
