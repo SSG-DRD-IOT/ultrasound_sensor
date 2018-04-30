@@ -9,4 +9,4 @@ link_directories(/usr/lib/x86_64-linux-gnu)
 
 add_executable(UltrasoundUPM ultrasound_upm.c)
 
-target_link_libraries(UltrasoundUPM mraa)
+target_link_libraries(UltrasoundUPM upmc-hcsr04 mraa)

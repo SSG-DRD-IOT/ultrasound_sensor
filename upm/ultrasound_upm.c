@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "upm.h"
 #include "upm_utilities.h"
 #include "hcsr04.h"
 
