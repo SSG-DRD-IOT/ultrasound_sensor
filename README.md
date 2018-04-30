@@ -39,9 +39,9 @@ gpio_export
 gpio_get_value
 gpio_set_value
 
-## Code Block:
+### Code Block:
 
-## Build Run Instruction:
+### Build Run Instruction:
 
 $ cd legacy_sys/
 $ gcc ultrasound.c -o ultrasound
@@ -67,10 +67,10 @@ to play with GPIO. Need to change to MRAA's own Pin Numbering instead of SYSFS G
 
 see : https://github.com/intel-iot-devkit/mraa/blob/master/docs/up2.md
 
-## Code Block
+### Code Block
 
 
-## Build and Run Instructions
+### Build and Run Instructions
 
 $ gcc ultrasound_upm.c -I/usr/include/mraa/ -L/usr/lib/x86_64-linux-gnu/ -lmraa
 
@@ -78,11 +78,11 @@ What if we skip MRAA and just use UPM which already have HC-SR04 sensor in its l
 
 UPM library already does sensor initialisation so no need to access for GPIO pins when we defined the PIN numbers.
 
-## Code Block
+### Code Block
 
 
 
-## Build and Run Instructions
+### Build and Run Instructions
 
 $ gcc ultrasound_upm.c -I/usr/include/upm/ -L/usr/lib/x86_64-linux-gnu/ -lmraa -lupmc-hcsr04
 
