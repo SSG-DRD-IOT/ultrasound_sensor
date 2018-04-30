@@ -9,11 +9,11 @@ HC-SR04 sensor has 4 pins, VCC, GND, TRIG and ECHO pins. Actual working principl
 Connecting HC-SR04 to UP2 Board Pins:
 https://www.electroschematics.com/8902/hc-sr04-datasheet/
 
-Image-1: HC-SR04 Sensor
+**Image-1: HC-SR04 Sensor**
 
 ![Image of HC-SR04](https://github.com/odundar/ultrasound_sensor/blob/master/resources/hcsr04.png)
 
-Image-2: Electronics of HC-SR04 Sensor
+**Image-2: Electronics of HC-SR04 Sensor**
 
 ![Image of HC-SR04 DS](https://github.com/odundar/ultrasound_sensor/blob/master/resources/hcsr04-ds.png)
 
@@ -30,10 +30,10 @@ See UP2 board pinout: https://wiki.up-community.org/Pinout_UP2
 So let's write our code to read distance continuously from HC-SR4 sensor and print the distance in centimeters until you press 'q' or 'Q':
 
 Basic logic of code is :
-Set mode of GPIO pins for TRIG and ECHO pins
-Toggle TRIG pin for 10us
-Measure the us for ECHO PIN get HIGH
-Calculate Distance with formula (duration (uS) / 59.0) in centimeters
+* Set mode of GPIO pins for TRIG and ECHO pins
+* Toggle TRIG pin for 10us
+* Measure the us for ECHO PIN get HIGH
+* Calculate Distance with formula (duration (uS) / 59.0) in centimeters
 
 Logic is simple but, in order to play with GPIO pins, I had developed 4 methods:
 ```
