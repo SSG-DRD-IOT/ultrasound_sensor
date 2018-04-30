@@ -11,6 +11,9 @@
 #define TRIG_PIN 431 //MRAA NO 7, PIN 15 on UP2 board
 #define ECHO_PIN 432 //MRAA NO 13, PIN 13 on UP2 board
 
+const double minDistance = 2.00; //cms limits of sensor
+const double maxDistance = 400.00; //cms
+
 int main() {
     hcsr04_context dev = hcsr04_init(TRIG_PIN, ECHO_PIN);
 
