@@ -52,7 +52,7 @@ Logic is simple but, in order to play with GPIO pins, you need to access devices
  
 We need to set mode of pin (input/output), we need to export pins if not exported into file system, read and set values so in order to do that I wrote 4 methods as shown below:
 
-```
+```c
 gpio_set_mode
 gpio_export
 gpio_get_value
@@ -63,7 +63,7 @@ Code can be accessed from : [Ultrasound Distance Measure with UP2 Board](https:/
 Let's have a quick look at the code.
 
 ### Code Block:
-```
+```c
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -306,12 +306,12 @@ int main() {
 You can build with below instructions on your UP2 board make sure you installed `build-essentials` package.
 
 ### Build Run Instruction:
-```
+```bash
 $ cd legacy_sys/
 $ gcc ultrasound.c -o Ultrasound
  ```
 or
-```
+```bash
 $ mkdir build
 $ cmake ../
 $ make all
@@ -330,14 +330,14 @@ Let's first install MRAA and UPM into UP2 board Ubuntu 16.04 with following
 See: https://github.com/intel-iot-devkit/mraa 
 See: https://iotdk.intel.com/docs/master/upm/installing.html 
 
-```
+```shell
 sudo add-apt-repository ppa:mraa/mraa
 sudo apt-get update
 sudo apt-get install libmraa1 libmraa-dev libmraa-java python-mraa python3-mraa node-mraa mraa-tools libupm-dev libupm-java python-upm python3-upm node-upm upm-examples
 ```
 
 There wouldn't be any need for reinventing the wheel, so we can just use the MRAA methods:
-```
+```c
 mraa_gpio_init
 mraa_gpio_dir
 mraa_gpio_write
@@ -350,7 +350,7 @@ see : https://github.com/intel-iot-devkit/mraa/blob/master/docs/up2.md
 Code can be accessed from : [Ultrasound Distance Measure with UP2 Board - MRAA](https://github.com/odundar/ultrasound_sensor/blob/master/mraa/ultrasound_mraa.c)
 
 ### MRAA - Code Block
-```
+```c
 /* standard headers */
 #include <signal.h>
 #include <stdio.h>
@@ -479,11 +479,11 @@ int main() {
 
 ### Build and Run Instructions
 
-```
+```shell
 $ gcc ultrasound_upm.c -o UltrasoundMRAA -I/usr/include/mraa/ -L/usr/lib/x86_64-linux-gnu/ -lmraa
 ```
 or 
-```
+```shell
 $ mkdir build
 $ cmake ../
 $ make all
@@ -500,7 +500,7 @@ UPM library already does sensor initialisation so no need to access for GPIO pin
 Code can be accessed from : [Ultrasound Distance Measure with UP2 Board - UPM](https://github.com/odundar/ultrasound_sensor/blob/master/mraa/ultrasound_upm.c)
 
 ### UPM - Code Block
-```
+```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -555,11 +555,11 @@ int main() {
 ```
 
 ### Build and Run Instructions
-```
+```shell
 $ gcc ultrasound_upm.c -o UltrasoundUPM -I/usr/include/upm/ -L/usr/lib/x86_64-linux-gnu/ -lmraa -lupmc-hcsr04
 ```
 or 
-```
+```shell
 $ mkdir build
 $ cmake ../
 $ make all
