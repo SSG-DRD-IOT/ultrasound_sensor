@@ -17,7 +17,7 @@ https://www.electroschematics.com/8902/hc-sr04-datasheet/
 
 ![Image of HC-SR04 DS](https://github.com/odundar/ultrasound_sensor/blob/master/resources/hcsr04-ds.png)
 
-**Image-3: Timing of HC-SR04 Sesnsor**
+**Image-3: Timing of HC-SR04 Sensor**
 ![Image of HC-SR04 TTL](https://github.com/odundar/ultrasound_sensor/blob/master/resources/HCSR04-TTL.png)
 
 As we seen from the datasheet. 
